@@ -1,0 +1,35 @@
+Houdini 22.0.466 | licenseCategoryType.Apprentice
+grid          -> grid                   parms ok
+box           -> box                    parms ok
+sphere        -> sphere                 parms ok
+line          -> line                   parms ok
+scatter       -> scatter::2.0           parms ok
+mountain      -> mountain::2.0          parms ok
+polyextrude   -> polyextrude::2.0       parms ok
+subdivide     -> subdivide              parms ok
+xform         -> xform                  parms ok
+copytopoints  -> copytopoints::2.0      parms ok
+merge         -> merge                  parms ok
+null          -> null                   parms ok
+
+[1] a grid 10 by 10, scatter 200 points, copy spheres of radius 0.1 onto the points
+  built: grid1(grid) scatter1(scatter::2.0) sphere1(sphere) copytopoints1(copytopoints::2.0) OUT(null)
+  warnings: none | cook errors: none
+  OUT geometry: 200 points, 200 primitives
+
+[2] a grid 50 by 50 with 100 rows and 100 columns, add mountain noise with height 3, then move it up 2
+  built: grid1(grid) mountain1(mountain::2.0) xform1(xform) OUT(null)
+  warnings: none | cook errors: none
+  OUT geometry: 10000 points, 9801 primitives
+
+[3] a box size 2 and extrude it by 0.5 and subdivide it 2 times
+  built: box1(box) polyextrude1(polyextrude::2.0) subdivide1(subdivide) OUT(null)
+  warnings: none | cook errors: none
+  OUT geometry: 98 points, 96 primitives
+
+[4] a sphere of radius 1, a box size 3
+  built: sphere1(sphere) box1(box) merge1(merge) OUT(null)
+  warnings: none | cook errors: none
+  OUT geometry: 9 points, 7 primitives
+
+saved examples_test.hipnc

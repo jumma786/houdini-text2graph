@@ -55,18 +55,29 @@ stand-in for Houdini's `hou` module, including versioned node-type fallbacks and
 3. Click the tool, type a description, and press **Build**. A `text2graph` geometry node appears
    under `/obj`.
 
+## Checked in Houdini
+
+`houdini_check.py` (run in **Windows → Python Shell**) creates every node type in the registry,
+checks its parameter names, then builds and cooks four example descriptions. Results from
+Houdini 22.0.466 Apprentice are in `houdini_check_results.txt`:
+
+- All 12 node types exist and all registry parameter names are present (scatter, mountain, poly
+  extrude and copy to points resolve to their `::2.0` versions).
+- All four example networks build and cook with no warnings and no cook errors, for example
+  "a grid 10 by 10, scatter 200 points, copy spheres of radius 0.1 onto the points" gives 200 points
+  on `OUT`, and a 100 × 100 grid with mountain noise gives 10,000 points and 9,801 polygons.
+
 ## Limits (honest status)
 
-- **Not yet run inside Houdini.** The builder is tested only against a stand-in `hou` module. Node
-  and parameter names (`npts`, `rad`, `dist`, `height`, `t`/`r`/`scale`, ...) come from Houdini's
-  documentation and must be checked in a real Houdini session; the builder already tries versioned
-  type names (for example `scatter::2.0`) and reports missing parameters instead of failing.
+- The check confirms that the networks are valid and cook; it does not judge whether they look like
+  what was described.
+- Spheres use Houdini's default primitive sphere (one point and one primitive each), so the copied
+  spheres in example 1 are primitive spheres, not polygon meshes.
 - The parser is rule-based and only understands the small vocabulary above.
 - There is no evaluation with technical artists yet.
 
 ## Next steps
 
-- Verify every node type and parameter in Houdini Apprentice and record the version.
 - Add a language-model backend that writes the `Graph` JSON, and compare it with the rule-based
   baseline on a fixed set of descriptions: validity rate, node-type accuracy, parameter error.
 - Expose "artistic controls": promote the key parameters (counts, sizes, heights) to the top-level
